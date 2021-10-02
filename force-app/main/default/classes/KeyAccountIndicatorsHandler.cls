@@ -3,11 +3,11 @@ public class KeyAccountIndicatorsHandler{
     public static String getKeyAccountIndicators(ID accountId){
         //Query for the account passed in from the LWC and all its related accounts
         Map<ID,Account> accountsWithRelated = new Map<ID,Account>(
-            [SELECT Id, Name
+            [SELECT Id
              FROM Account
              WHERE Id = :accountId
              OR ParentId = :accountId
-             ORDER BY Name]
+            ORDER BY Name]
         );
         
         //Put the account and its related accounts in different variables/collections
@@ -24,9 +24,9 @@ public class KeyAccountIndicatorsHandler{
         );
     }
     
-    //Main wrapper class that gets returned to the LWC. Contains a KeyIndicatorsWrapper for the parent account,
-    //a list of KeyIndicatorsWrapper for each child account,
-    //and a list of the unique KeyIndicators on the child accounts
+	//Main wrapper class that gets returned to the LWC. Contains a KeyIndicatorsWrapper for the parent account,
+	//a list of KeyIndicatorsWrapper for each child account,
+	//and a list of the unique KeyIndicators on the child accounts
     public class KeyIndicatorsWithChildIndicators{
         public KeyIndicatorsWrapper parentIndicators;
         public List<KeyIndicatorsWrapper> childIndicators = new List<KeyIndicatorsWrapper>();
@@ -49,18 +49,16 @@ public class KeyAccountIndicatorsHandler{
                 }
                 
                 for (KeyIndicator ind : relatedWrapper.indicators){
-                    uniqueChildIndicatorsMap.put(ind.title, ind);
+                     uniqueChildIndicatorsMap.put(ind.title, ind);
                 }
-                
+
                 this.childIndicators.add(relatedWrapper);
             }
             
             this.uniqueChildIndicators = uniqueChildIndicatorsMap.values();
-            
-            this.uniqueChildIndicators.sort();
         }
     }
-    
+   
     //Wrapper that contains an account and a list of KeyIndicators
     public class KeyIndicatorsWrapper{
         public Account a;
@@ -100,89 +98,25 @@ public class KeyAccountIndicatorsHandler{
             return -1;        
         }
     }
-    
+        
     //Method to just check custom logic, and add KeyIndicators to a return map
     public static  List<KeyIndicator> checkAccountIndicators(Account accountToCheck){
         List<KeyIndicator> keyIndicatorsToReturn = new List<KeyIndicator>();
-        
-        
-        if (accountToCheck.Name == 'Arsenal' || accountToCheck.Name == 'Chelsea' || accountToCheck.Name == 'Manchester City' || accountToCheck.Name == 'Big Business Account'){
+
+
+        if ('HEY A STRING' != null){
             keyIndicatorsToReturn.add(
                 makeIndicatorGreen(
-                    'ACTIVE CUSTOMER', 
-                    'Has active company subscriptions', 
-                    'money',
-                    0
-                )
-            );
-        }else if (accountToCheck.Name == 'Manchester United'){
-            keyIndicatorsToReturn.add(
-                makeIndicatorYellow(
-                    'FORMER CUSTOMER', 
-                    'Once had active company subscriptions', 
-                    'contact_request',
-                    40
-                )
-            );
-        }else{
-            keyIndicatorsToReturn.add(
-                makeIndicatorPurple(
-                    'PROSPECT', 
-                    'Account is a prospect', 
-                    'advertising',
+                    'TEST ALERT', 
+                    'Test alert template', 
+                    'animal_and_nature',
                     0
                 )
             );
         }
-        
-        if (accountToCheck.Name == 'Chelsea'){
-            keyIndicatorsToReturn.add(
-                makeIndicatorGreen(
-                    'OPEN SUPPORT CASES', 
-                    'Has open support cases', 
-                    'questions_and_answers',
-                    10
-                )
-            );
-            
-            keyIndicatorsToReturn.add(
-                makeIndicatorRed(
-                    'CANCELLATION RISK', 
-                    'At risk of cancelling', 
-                    'connected_apps',
-                    0
-                )
-            );
-        }
-        
-        if (accountToCheck.Name == 'Big Business Account'){
-            keyIndicatorsToReturn.add(
-                makeIndicatorRed(
-                    'CANCELLATION RISK', 
-                    'At risk of cancelling', 
-                    'connected_apps',
-                    0
-                )
-            );
-        }
-        
-        if (accountToCheck.Name == 'Arsenal'){
-            keyIndicatorsToReturn.add(
-                makeIndicatorBlue(
-                    'ONBOARDING', 
-                    'Account is actively onboarding', 
-                    'trail',
-                    30
-                )
-            );
-        }
-        
-           
-    
-       
-        
+
         keyIndicatorsToReturn.sort();
-        
+
         return keyIndicatorsToReturn;
     }
     
@@ -196,7 +130,7 @@ public class KeyAccountIndicatorsHandler{
     };
              
                 
-     private static final String IMAGE_PATH = '/_slds/icons/utility-sprite/svg/symbols.svg#';
+    private static final String IMAGE_PATH = '/_slds/icons/utility-sprite/svg/symbols.svg#';
     
     //Small class that holds a hex value and the value of an SLDS action icon
     //The hex color determines the footer color of the KeyIndicator and the action icon
@@ -282,6 +216,4 @@ public class KeyAccountIndicatorsHandler{
             sortOrder
         );
     }
-    
-    
 }
