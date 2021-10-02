@@ -1,0 +1,23 @@
+.subtitle, .title {
+    font-size: 10px;
+}
+
+.indicator {
+    display: block;
+}
+
+.indicator-icon {
+    overflow: hidden;
+}
+
+.indicator-footer.slds-text-align_right.slds-p-top_x-small{
+    height: 12px;
+    border-bottom-left-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+}
+
+.indicator.slds-card.slds-card_boundary.slds-theme_default{
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-bottom-color: transparent;
+}

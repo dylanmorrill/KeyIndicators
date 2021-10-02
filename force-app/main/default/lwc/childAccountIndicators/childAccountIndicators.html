@@ -1,0 +1,79 @@
+<template>
+	<article class="indicator slds-card slds-card_boundary">
+		<div class="slds-card__header slds-grid slds-theme_shade slds-p-around_x-small slds-m-bottom_none">
+			<header class="slds-media slds-media_center slds-has-flexi-truncate">
+				<div class="slds-media__figure">
+					<span class="slds-icon_container slds-icon-utility-announcement">
+						<svg class="slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+							<use xlink:href="/_slds/icons/utility-sprite/svg/symbols.svg#org_chart"></use>
+						</svg>
+					</span>
+				</div>
+				<div class="slds-media__body">
+					<p class="slds-truncate slds-m-around_none slds-p-around_none">
+						<b>
+						Hierarchy
+						</b>
+					</p>
+					<p class="slds-truncate slds-m-around_none slds-p-around_none">
+						Indicators on {childIndicators.length} related account(s)
+					</p>
+				</div>
+				<div class="slds-no-flex">
+					<div class="slds-form-element">
+						<label class="slds-checkbox_toggle slds-grid">
+							<span class="slds-form-element__label slds-m-bottom_none">Drilldown</span>
+							<input type="checkbox" onchange={setViewHierarchy}/>
+							<span class="slds-checkbox_faux_container">
+								<span class="slds-checkbox_faux"></span>
+								<span class="slds-checkbox_on"></span>
+								<span class="slds-checkbox_off"></span>
+							</span>
+						</label>
+					</div>
+				</div>
+			</header>
+		</div>
+		<div class="slds-card__body slds-card__body_inner slds-p-top_none slds-m-top_none slds-p-right_x-small slds-p-left_x-small">
+			<template if:false={viewHierarchy}>
+				<div class="slds-grid slds-wrap slds-gutters_xx-small slds-grid_align-start slds-p-right_none slds-p-left_none">
+					<template for:each={uniqueChildIndicators} for:item="ind">
+						<div key={ind.title} class="slds-col slds-size_1-of-5 slds-p-top_x-small" style="overflow: hidden">
+							<c-account-indicator-small indicator={ind}>
+							</c-account-indicator-small>
+						</div>
+					</template>
+				</div>
+			</template>
+			<template if:true={viewHierarchy}>
+				<div class="slds-grid slds-wrap slds-gutters_xx-small slds-grid_align-start slds-p-right_none slds-p-left_none slds-p-top_none slds-scrollable_y" style="max-height: 500px;">
+					<template for:each={childIndicators} for:item="indWrap">
+						<div key={indWrap.a.Name} class="slds-col slds-size_1-of-3 slds-p-top_x-small" style="overflow: hidden;">
+							<lightning-layout horizontal-align="center" vertical-align="center">
+								<lightning-layout-item flexibility="auto" padding="around-small">
+									<p class="slds-p-top_xx-small">
+										<a name={indWrap.a.Id} onclick={goToAccount}>
+										{indWrap.a.Name}
+										</a>
+									</p>
+								</lightning-layout-item>
+							</lightning-layout>
+						</div>
+						<div key={indWrap.a.Name} class="slds-col slds-size_2-of-3 slds-p-right_none slds-p-left_none" style="overflow: hidden;">
+							<div class="slds-grid slds-wrap">
+								<template for:each={indWrap.indicators} for:item="ind">
+									<div key={ind.title} class="slds-col slds-size_1-of-3 slds-p-top_x-small">
+										<c-account-indicator-small  indicator={ind}>
+										</c-account-indicator-small>
+									</div>
+								</template>
+							</div>
+						</div>
+						<div key={indWrap.a.Name} class="slds-border_bottom slds-col slds-size_4-of-4 slds-p-top_x-small">
+						</div>
+					</template>
+				</div>
+			</template>
+		</div>
+	</article>
+</template>
